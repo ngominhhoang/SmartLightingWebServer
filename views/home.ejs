@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.5
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <% include partials/header.ejs %>
+</head>
+<!-- END HEAD -->
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
+<% include partials/head.ejs %>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+   <% include partials/menu.ejs %>
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <div class="row">
+                <%if(username === 'Root User') {%>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-red-haze">
+                                    <span data-counter="counterup" data-value="1"><%= numberOfUser %></span>
+                                </h3>
+                                <small>TỔNG SỐ USER</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <%}%>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span data-counter="counterup" data-value="3"><%= numberOfHome %></span>
+                                </h3>
+                                <small>TỔNG SỐ NHÀ</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-home"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-purple-soft">
+                                    <span data-counter="counterup" data-value="130"><%= numberOfRoom %></span>
+                                </h3>
+                                <small>TỔNG SỐ PHÒNG</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-hotel"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-blue-sharp">
+                                    <span data-counter="counterup" data-value="2"><%= numberOfDevice %></span>
+                                </h3>
+                                <small>TỔNG SỐ THIẾT BỊ</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-lightbulb-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-blue-oleo">
+                                    <span data-counter="counterup" data-value="2"><%= numberOfTurnOnLight %></span>
+                                </h3>
+                                <small>TỔNG SỐ ĐÈN ĐANG BẬT</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-lightbulb-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 statsMargin">
+                    <div class="dashboard-stat2 borderedBoxes">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span data-counter="counterup" data-value="2"><%= powerConsumption %></span>
+                                    <small class="font-green-sharp">mW</small>
+                                </h3>
+                                <small>Lượng điện năng tiêu thụ</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-bolt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->
+<% include partials/footer.ejs %>
+</body>
+
+</html>

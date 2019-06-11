@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.5
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <% include partials/header.ejs %>
+</head>
+<!-- END HEAD -->
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
+<% include partials/head.ejs %>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <% include partials/menu.ejs %>
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet light bordered borderedBoxes">
+                <div class="portlet-title">
+                    <div class="caption font-green">
+                        <i class="icon-pin font-green"></i>
+                        <span class="caption-subject bold uppercase"> Chọn người dùng </span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form role="form" action="/getHomeList" method="post">
+                        <div class="form-body">
+                            <% if(error !== null){ %>
+                                <div class="alert alert-danger">
+                                    <button class="close" data-close="alert"></button>
+                                    <span> <%= error %> </span>
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-info display-hide">
+                                </div>
+                            <%}%>
+                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                <select class="form-control edited chooseUsername" name="chooseUsername"></select>
+                                <label for="form_control_1">Chọn tài khoản</label>
+                            </div>
+                        </div>
+                        <div class="form-actions right">
+                            <button type="submit" class="btn btn-outline blue">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="portlet light bordered borderedBoxes">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+                        <span class="caption-subject bold uppercase">Danh sách nhà</span>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn green-haze btn-outline btn-sm" data-toggle="modal" href="#addHome">Thêm nhà</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="list_device">
+                            <thead>
+                            <tr>
+                                <th class="text-center"> STT </th>
+                                <th class="text-center"> ID </th>
+                                <th class="text-center"> Nhà </th>
+                                <th class="text-center"> Username sở hữu nhà </th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%let count = 1%>
+                            <% for(let i in data) { %>
+                                <% for(let j in data[i]) {%>
+                                <tr>
+                                    <td class="middleTable"><%=count%></td>
+                                    <td class="middleTable"><%=data[i][j].home_id%></td>
+                                    <td class="middleTable"><%=data[i][j].home_name%></td>
+                                    <td class="middleTable"><%=data[i][j].username%></td>
+                                    <td class="middleTable">
+                                        <button type="button" onclick="deleteHome('<%=data[i][j].username%>', '<%=key%>', '<%=data[i][j].home_id%>')" class="btn btn-outline red">Xoá</button>
+                                    </td>
+                                </tr>
+                                <%count++;%>
+                                <%}%>
+                            <%}%>
+                            </tbody>
+                        </table>
+                        <div class="modal fade" id="addHome" tabindex="-1" role="addHome" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Thêm </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="portlet-body form">
+                                            <form role="form" action="/add_home" method="post">
+                                                <div class="form-body">
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info" id="getusername">
+                                                        <select class="form-control edited chooseUsername" name="chooseUsername"></select>
+                                                        <label for="form_control_1">Chọn người dùng</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions right">
+                                                    <button type="submit" class="btn btn-outline blue">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTENT BODY -->
+        </div>
+        <!-- END CONTENT -->
+    </div>
+    <!-- END CONTAINER -->
+    <% include partials/footer.ejs %>
+</body>
+<script>
+    let serverURL = "<%=process.env.SERVER_ADD%>";
+
+    let origin = window.location.origin;
+
+    $(document).ready(() => {
+        $('#loading').hide();
+        $(document).ajaxStart(() => {
+            $('#loading').show();
+        }).ajaxStop(() => {
+            $('#loading').hide();
+        })
+
+        let token = "<%=key%>";
+
+        console.log(serverURL);
+
+        let getUser = token => {
+            let url = serverURL + "/api/users/list_user?token=" + token;
+            $.getJSON(url, res => {
+                $('.chooseUsername').empty();
+                $('.chooseUsername').append($('<option>').text("Select"));
+                $.each(res.data, (i, obj) => {
+                    $('.chooseUsername').append($('<option>').text(obj.username).attr('value', obj.username));
+                });
+            });
+        }
+
+        getUser(token);
+    });
+
+    let deleteHome = (username, token, home_id) => {
+        let url = serverURL + "/api/modify/delete_home?token=" + token;
+        if(confirm('Bạn có chắc muốn xoá nhà id là: ' + home_id)){
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    "house_owner": username,
+                    "home_id": home_id
+
+                },
+                success: function(msg){
+                    if(msg.success === true){
+                        alert('Xoá thành công ' + home_id);
+                        window.location.href= origin + '/list_home';
+                    }
+                    else{
+                        alert(JSON.stringify(msg.reason));
+                        window.location.href= origin + '/list_home';
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    alert(textStatus + "     " + errorThrown);
+                }
+            });
+        }
+    }
+</script>
+
+</html>

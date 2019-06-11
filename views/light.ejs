@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.5
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <% include partials/header.ejs %>
+</head>
+<!-- END HEAD -->
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
+    <% include partials/head.ejs %>
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <% include partials/menu.ejs %>
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <!-- BEGIN CONTENT BODY -->
+            <div class="page-content">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered borderedBoxes">
+                    <div class="portlet-title">
+                        <div class="caption font-green">
+                            <i class="icon-pin font-green"></i>
+                            <span class="caption-subject bold uppercase"> Lựa chọn thiết bị </span>
+                        </div>
+                    </div>
+                    <% if(error !== null){%>
+                        <script>
+                            $(document).ready(() => {
+                                toastr.error(<%=error%>);
+                                alert(<%=error%>);
+                            })
+                        </script>
+                    <%}%>
+                    <div class="portlet-body form">
+                        <form role="form" action="/getDeviceList" method="post">
+                            <div class="form-body">
+                                <div class="form-group form-md-line-input form-md-floating-label has-info" id="gethome">
+                                    <select class="form-control edited" id="chooseHome" name="chooseHome"></select>
+                                    <label for="form_control_1">Chọn nhà</label>
+                                </div>
+                                <div class="form-group form-md-line-input form-md-floating-label has-info" id="getroom">
+                                    <select class="form-control edited" id="chooseRoom" name="chooseRoom"></select>
+                                    <label for="form_control_1">Chọn phòng</label>
+                                </div>
+                                <div class="form-group form-md-line-input form-md-floating-label has-info" id="getdevicetype">
+                                    <select class="form-control edited" id="chooseType" name="chooseType">
+                                        <option>Select</option>
+                                        <option value="device_lighting">Đèn</option>
+                                        <option value="device_illuminance_sensor">Sensor</option>
+                                    </select>
+                                    <label for="form_control_1">Chọn loại thiết bị</label>
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="submit" class="btn btn-outline blue">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="portlet light bordered borderedBoxes" id="listLight">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <span class="caption-subject bold uppercase">Danh sách thiết bị</span>
+                        </div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn green-haze btn-outline btn-sm" data-toggle="modal" href="#addDevice">Thêm thiết bị</a>
+                                <button type="button" data-toggle="modal" data-target="#controlLight" class="btn btn-outline blue">Điều khiển</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="list_device">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> STT </th>
+                                    <th class="text-center"> Loại đèn </th>
+                                    <th class="text-center"> Tên đèn </th>
+                                    <th class="text-center"> Địa chỉ MAC </th>
+                                    <th class="text-center"> Địa điểm </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%let count = 1%>
+                                <% for(let i in data) { %>
+                                    <% for(let j in data[i]) {%>
+                                    <tr>
+                                        <td class="middleTable"><%=count%></td>
+                                        <td class="middleTable"><%=data[i][j].device_type%></td>
+                                        <td class="middleTable"><%=data[i][j].device_name%></td>
+                                        <td class="middleTable"><%=data[i][j].mac_address%></td>
+                                        <td class="middleTable"><%=data[i][j].location%></td>
+                                        <td class="middleTable">
+                                            <button type="submit" onclick="deleteDevices('<%=home_id%>', '<%=room_id%>', '<%=key%>', '<%=data[i][j].mac_address%>', '<%=device_type%>')" class="btn btn-outline red">Xoá</button>
+                                        </td>
+                                    </tr>
+                                    <div class="modal fade" id="controlLight" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                                                    <h4 class="modal-title">Điều khiển đèn</h4>
+                                                </div>
+                                                <div class="modal-body" id="triggerjs">
+                                                    <div class="portlet light form-fit ">
+                                                        <div class="portlet-body form form-horizontal form-bordered">
+                                                            <div class="form-body" id="sensorListLocation"></div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" id="submitControl" class="btn btn-outline blue">Lấy danh sách vị trí</button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="record" id="record" class="btn btn-outline blue">Record</button>
+                                                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                                    <button type="button" id="turnLightOn" class="btn btn-outline blue">Submit</button>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                        <%count++;%>
+                                    <%}%>
+                                <%}%>
+                                </tbody>
+                            </table>
+                            <div class="modal fade" id="addDevice" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <h4 class="modal-title">Thêm thiết bị</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="portlet-body form">
+                                                <form role="form" action="/add_home" method="post">
+                                                    <div class="form-body">
+                                                        <div class="form-group form-md-line-input form-md-floating-label has-info" id="getusername">
+                                                            <select class="form-control edited chooseUsername" name="chooseUsername"></select>
+                                                            <label for="form_control_1">Chọn người dùng</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions right">
+                                                        <button type="submit" class="btn btn-outline blue">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- END CONTENT BODY -->
+        </div>
+        <!-- END CONTENT -->
+    </div>
+        <!-- END CONTAINER -->
+    <% include partials/footer.ejs %>
+</body>
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script>
+    let serverURL = "<%= process.env.SERVER_ADD%>";
+
+    let origin = window.location.origin;
+
+    let numberOfLocation = 0;
+
+    let deleteDevices = (home_id, room_id, token, mac_device, device_type) => {
+        if(confirm('Bạn có chắc muốn xoá thiết bị ' + mac_device)){
+            $.ajax({
+                type: "POST",
+                url: serverURL + "/api/modify/delete_device?token=" + token,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    "home_id": home_id,
+                    "room_id": room_id,
+                    "device_id": mac_device,
+                    "device_type": device_type,
+                },
+                success: (msg) => {
+                    if(msg.success === true){
+                        window.location.href= origin + '/light';
+                        toastr.success('Xoá thành công thiết bị ' + mac_device);
+                    }
+                   else if(msg.success === false){
+                       window.location.href= origin + '/light'
+                       toastr.error(JSON.stringify(msg.reason));
+                   }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(textStatus + "     " + errorThrown);
+                }
+            });
+        }
+    }
+
+    function sendData(data) {
+        var blobToBase64 = function(blob, cb) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var dataUrl = reader.result;
+                var base64 = dataUrl.split(',')[1];
+                cb(base64);
+            };
+            reader.readAsDataURL(blob);
+        };
+
+        blobToBase64(data, function(base64){ // encode
+            console.log(base64)
+            var update = {'blob': base64};
+            $.ajax({
+                type: "POST",
+                url: origin + "/record",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    'blob': base64
+                },
+                success: (msg) => {
+                    console.log(msg)
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(JSON.stringify(textStatus + "     " + errorThrown + "     " + XMLHttpRequest));
+                }
+            });
+        });
+        /*var formData = new FormData();
+        formData.append('sound', data);
+        $.ajax({
+            type: "POST",
+            url: origin + "/record",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: (msg) => {
+                console.log(msg)
+            },
+            error: (XMLHttpRequest, textStatus, errorThrown) => {
+                toastr.error(JSON.stringify(textStatus + "     " + errorThrown + "     " + XMLHttpRequest));
+            }
+        });*/
+        /*var reader = new window.FileReader();
+        reader.readAsDataURL(data);
+        reader.onloadend = function () {
+            base64data = reader.result;
+            console.log(base64data)
+            $.ajax({
+                type: "POST",
+                url: origin + "/record",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    'data' : base64data
+                },
+                success: (msg) => {
+                    console.log(msg)
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(JSON.stringify(textStatus + "     " + errorThrown + "     " + XMLHttpRequest));
+                }
+            });
+        }*/
+    }
+
+    URL = window.URL || window.webkitURL;
+    var gumStream;
+    var rec;
+    var input;
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    var audioContext = new AudioContext;
+
+    function createDownloadLink(blob) {
+        console.log(blob)
+        var blobToBase64 = function(blob, cb) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var dataUrl = reader.result;
+                var base64 = dataUrl.split(',')[1];
+                cb(base64);
+            };
+            reader.readAsDataURL(blob);
+        };
+
+        blobToBase64(blob, function(base64){ // encode
+            console.log(base64)
+            var update = {'blob': base64};
+            $.ajax({
+                type: "POST",
+                url: origin + "/record",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    'blob': base64
+                },
+                success: (msg) => {
+                    if(msg.success == true){
+                        var instance = $("#location"+msg.pos).data("ionRangeSlider");
+
+                        instance.update({
+                            from: msg.level //your new value
+                        });
+                        toastr.success('Chỉnh mức độ thành công');
+                    }
+                    else if(msg.success == false){
+                        toastr.error(msg.err);
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(JSON.stringify(textStatus + "     " + errorThrown + "     " + XMLHttpRequest));
+                }
+            });
+        });
+    }
+
+    function stopRecording() {
+        console.log("stopButton clicked");
+        rec.stop(); //stop microphone access
+        gumStream.getAudioTracks()[0].stop();
+        rec.exportWAV(createDownloadLink);
+    }
+
+    $('#record').on('click',() => {
+        var constraints = {
+            audio: true,
+            video: false
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+            console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+            /* assign to gumStream for later use */
+            gumStream = stream;
+            /* use the stream */
+            input = audioContext.createMediaStreamSource(stream);
+            /* Create the Recorder object and configure to record mono sound (1 channel) Recording 2 channels will double the file size */
+            rec = new Recorder(input, {
+                numChannels: 1
+            })
+            //start the recording process
+            rec.record()
+            console.log("Recording started");
+            setTimeout(function () {
+                stopRecording()
+            },4500);
+        }).catch(function(err) {
+
+        });
+
+    })
+    
+    $('#turnLightOn').on('click',() => {
+        let home_id = "<%=home_id%>";
+        let room_id = "<%=room_id%>"
+        let i = 1;
+        let inputValue = [];
+        $("input[type='text']").each(() => {
+            let n = $('#location'+i).val();
+            if(n === "-20"){
+                inputValue.push("-1");
+            }
+            else{
+                inputValue.push(n);
+            }
+            i++;
+        });
+        let s = JSON.stringify(inputValue);
+        $.ajax({
+            type: "POST",
+            url: origin + "/turnOnLight/home/" + home_id + "/room/" + room_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: s,
+            success: (msg) => {
+                if(msg.success == true){
+                    toastr.success('Điều khiển đèn thành công');
+                }
+                else if(msg.success == false){
+                    toastr.error(msg.reason);
+                }
+            },
+            error: (XMLHttpRequest, textStatus, errorThrown) => {
+                toastr.error(JSON.stringify(textStatus + "     " + errorThrown + "     " + XMLHttpRequest));
+            }
+        });
+    });
+
+    let getHome = token => {
+        let url = serverURL + "/api/data?token=" + token;
+        $.getJSON(url, res => {
+            $('#chooseHome').empty();
+            $('#chooseHome').append($('<option>').text("Select"));
+            $.each(res.data, (i, obj) => {
+                $('#chooseHome').append($('<option>').text(obj.home_id).attr('value', obj.home_id));
+            });
+        });
+    }
+    let getRoom = (home_id, token) => {
+        let url = serverURL + "/api/data/home/" + home_id + "?token=" + token;
+        $.getJSON(url, res => {
+            $('#chooseRoom').empty();
+            $('#chooseRoom').append($('<option>').text("Select"));
+            $.each(res.data, (i, obj) => {
+                $('#chooseRoom').append($('<option>').text(obj.room_name).attr('value', obj.room_id));
+            });
+        });
+    }
+
+    let getSensorList = (token, home_id, room_id, device_type) => {
+        let url = serverURL + "/api/data/home/" + home_id + "/room/" + room_id + "/device_type/" + device_type + "?token=" + token;
+        $.getJSON(url, res => {
+            numberOfLocation = res.data.length;
+            console.log(res.data)
+            $.each(res.data, (i, obj) => {
+                let tmp = i + 1;
+                $('#sensorListLocation')
+                    .append('<div class="form-group"><div class="col-md-12"><label class="col-md-2 control-label" style="padding-top: 20px;">Vị trí ' + obj.location + '</label><div class="col-md-10"><input type="text" id="location'+ obj.location +'" name="location' + obj.location +'"/></div></div></div>');
+                $("#location"+obj.location).ionRangeSlider({
+                    skin: "flat",
+                    grid: true,
+                    min: -20,
+                    max: 200,
+                    step: 20
+                })
+            })
+        });
+    }
+
+    let token = "<%=key%>";
+    let home_id, room_id, room_name;
+
+    $(document).ready(() => {
+        $('#loading').hide();
+        $(document).ajaxStart(() => {
+            $('#loading').show();
+        }).ajaxStop(() => {
+            $('#loading').hide();
+        })
+        $('#getroom').hide();
+        $('#getdevicetype').hide();
+
+        getHome(token);
+
+        $('#chooseHome').on('change', () => {
+            home_id = ($('#chooseHome option:selected').val());
+            $('#getroom').show();
+            getRoom(home_id, token);
+        });
+
+        $('#chooseRoom').on('change', () => {
+            room_id = $('#chooseRoom option:selected').val();
+            room_name = $('#chooseRoom option:selected').text();
+            $('#getdevicetype').show();
+        });
+
+        $('#submitControl').on('click', () => {
+            $('#submitControl').hide();
+            getSensorList(token, '<%=home_id%>', '<%=room_id%>', 'device_illuminance_sensor');
+        });
+    });
+</script>
+
+</html>

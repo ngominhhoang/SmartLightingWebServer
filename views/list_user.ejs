@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.5
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <% include partials/header.ejs %>
+</head>
+<!-- END HEAD -->
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
+<% include partials/head.ejs %>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <% include partials/menu.ejs %>
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet light bordered borderedBoxes">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+                        <span class="caption-subject bold uppercase">Danh sách người dùng</span>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn green-haze btn-outline" data-toggle="modal" href="#addNewUser">Thêm người dùng</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="list_device">
+                            <thead>
+                            <tr>
+                                <th class="text-center"> STT </th>
+                                <th class="text-center"> Username </th>
+                                <th class="text-center"> Tên người dùng </th>
+                                <th class="text-center"> Email</th>
+                                <th class="text-center"> SDT </th>
+                                <th class="text-center"> Ngày sinh </th>
+                                <th class="text-center"> Quyền hạn </th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%let count = 1%>
+                            <% for(let i in data) { %>
+                                <% for(let j in data[i]) {%>
+                                <tr>
+                                    <td class="middleTable"><%=count%></td>
+                                    <td class="middleTable"><%=data[i][j].username%></td>
+                                    <td class="middleTable"><%=data[i][j].fullname%></td>
+                                    <td class="middleTable"><%=data[i][j].email%></td>
+                                    <td class="middleTable"><%=data[i][j].phone_number%></td>
+                                    <td class="middleTable"><%=data[i][j].birthday%></td>
+                                    <%if(data[i][j].isRoot === 'T'){%>
+                                        <td class="middleTable">Admin</td>
+                                    <%}else{%>
+                                        <td class="middleTable">User</td>
+                                    <%}%>
+                                    <td class="middleTable">
+                                        <button type="button" data-toggle="modal" data-target="#editUser<%=data[i][j].user_id%>" class="btn btn-outline blue">Sửa</button>
+                                        <button type="submit" onclick="deleteUser('<%=data[i][j].username%>', '<%=key%>', '<%=data[i][j].fullname%>')" class="btn btn-outline red">Xoá</button>
+                                    </td>
+                                    <!--</form>-->
+                                </tr>
+                                <div class="modal fade" id="editUser<%=data[i][j].user_id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                                                <h4 class="modal-title">Sửa thông tin người dùng <%=data[i][j].fullname%></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="portlet-body form">
+                                                    <form role="form" action="#" method="post">
+                                                        <div class="form-body">
+                                                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                                <input class="form-control" type="text" name="username" id="username" value="<%=data[i][j].username%>"/>
+                                                                <label for="form_control_1">Username</label>
+                                                            </div>
+                                                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                                <input class="form-control" type="text" name="password" id="password" value="<%=data[i][j].fullname%>">
+                                                                <label for="form_control_1">Tên người dùng</label>
+                                                            </div>
+                                                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                                <input class="form-control" type="text" name="email" id="email" value="<%=data[i][j].email%>">
+                                                                <label for="form_control_1">Email</label>
+                                                            </div>
+                                                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                                <input class="form-control" type="text" name="phone_number" id="phone_number" value="<%=data[i][j].phone_number%>">
+                                                                <label for="form_control_1">SDT</label>
+                                                            </div>
+                                                            <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                                <input class="form-control" type="text" name="birthday" id="birthday" value="<%=data[i][j].birthday%>">
+                                                                <label for="form_control_1">Ngày sinh</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-actions right">
+                                                            <button type="submit" class="btn btn-outline blue">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <%count++;%>
+                                <%}%>
+                            <%}%>
+                            </tbody>
+                        </table>
+                        <div class="modal fade" id="addNewUser" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Đăng kí người dùng mới</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="portlet-body form">
+                                            <form role="form" action="/add_user" method="post">
+                                                <div class="form-body">
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="fullname" name="fullname">
+                                                        <label for="getNewRoomName">Họ và tên <span class="required" aria-required="true">*</span></label>
+                                                        <span id="error_fullname" class="help-block help-block-error"></span>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="username" name="username">
+                                                        <label for="getNewRoomName">Username <span class="required" aria-required="true">*</span></label>
+                                                        <span id="error_username" class="help-block help-block-error"></span>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="password" name="password">
+                                                        <label for="getNewRoomName">Mật khẩu <span class="required" aria-required="true">*</span></label>
+                                                        <span id="error_password" class="help-block help-block-error"></span>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="password_again" name="password_again">
+                                                        <label for="getNewRoomName">Nhập lại mật khẩu <span class="required" aria-required="true">*</span></label>
+                                                        <span id="error_pass_again" class="help-block help-block-error"></span>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="phone_number" name="phone_number">
+                                                        <label for="getNewRoomName">Số điện thoại</label>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="email" name="email">
+                                                        <label for="getNewRoomName">Email</label>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input form-md-floating-label has-info">
+                                                        <input type="text" class="form-control" id="birthday" name="birthday">
+                                                        <label for="getNewRoomName">Ngày sinh</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions right">
+                                                    <button type="submit" class="btn btn-outline blue">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTENT BODY -->
+        </div>
+        <!-- END CONTENT -->
+    </div>
+    <!-- END CONTAINER -->
+    <% include partials/footer.ejs %>
+</body>
+<script>
+    $('#error_fullname').hide();
+    $('#error_username').hide();
+    $('#error_password').hide();
+    $('#error_pass_again').hide();
+
+    let serverURL = "<%=process.env.SERVER_ADD%>"
+
+    let origin = window.location.origin;
+
+    let deleteUser = (username, token, fullname) => {
+        if(confirm("Bạn có chắc muốn xoá tài khoản " + fullname + "? Toàn bộ dữ liệu về người dùng này, bao gồm dữ liệu về nhà, phòng và các thiết bị, sẽ bị xoá vĩnh viễn !!!")){
+            $.ajax({
+                type: "POST",
+                url: serverURL + "/api/users/delete_user?token=" + token,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: {
+                    "user_delete": username
+                },
+                success: function(msg){
+                    console.log(msg);
+                    if(msg.success === true){
+                        toastr.success('Xoá thành công tài khoản ' + fullname);
+                        window.location.href= origin + '/list_user';
+                    }
+                    else{
+                        toastr.error(JSON.stringify(msg.reason));
+                        window.location.href= origin + '/list_user';
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(textStatus + "     " + errorThrown);
+                }
+            });
+        }
+    }
+    $(document).ready(() => {
+        $('#loading').hide();
+        $(document).ajaxStart(() => {
+            $('#loading').show();
+        }).ajaxStop(() => {
+            $('#loading').hide();
+        })
+    })
+</script>
+
+</html>
